@@ -24,7 +24,7 @@ public:
         for (int i = m + n - 1; i >= 0; i--) {
             product.push_back((char) (arr[i] + '0'));
         }
-        while (product.back() == '0' && product.size() > 1) product.pop_back();
+        while (product.size() > 1 && product.back() == '0') product.pop_back();
         reverse(product.begin(), product.end());
         return product;
     }
