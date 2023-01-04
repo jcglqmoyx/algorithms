@@ -3,6 +3,32 @@
 using namespace std;
 
 class Solution {
+    stack<int> op;
+    stack<int> nums;
+
+    bool is_operator(char c) {
+        return c == '+' || c == '-';
+    }
+
+    void eval() {
+        int b = nums.top();
+        nums.pop();
+        int a = nums.top();
+        nums.pop();
+        int c = op.top();
+        op.pop();
+        switch (c) {
+            case '+':
+                nums.push(a + b);
+                break;
+            case '-':
+                nums.push(a - b);
+                break;
+            default:
+                break;
+        }
+    }
+
 public:
     int calculate(string s) {
         if (s[0] == '+' || s[0] == '-') s = "0" + s;
@@ -18,7 +44,7 @@ public:
             }
         }
         s = move(tmp);
-        n = s.length();
+        n = (int) s.size();
         for (int i = 0; i < n; i++) {
             if (isdigit(s[i])) {
                 int x = 0, j = i;
@@ -53,32 +79,5 @@ public:
         }
         while (!op.empty()) eval();
         return nums.top();
-    }
-
-private:
-    stack<int> op;
-    stack<int> nums;
-
-    bool is_operator(char c) {
-        return c == '+' || c == '-';
-    }
-
-    void eval() {
-        int b = nums.top();
-        nums.pop();
-        int a = nums.top();
-        nums.pop();
-        int c = op.top();
-        op.pop();
-        switch (c) {
-            case '+':
-                nums.push(a + b);
-                break;
-            case '-':
-                nums.push(a - b);
-                break;
-            default:
-                break;
-        }
     }
 };
