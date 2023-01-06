@@ -3,30 +3,32 @@
 using namespace std;
 
 class Solution {
+    int n;
     vector<bool> st;
     vector<int> path;
     vector<vector<int>> res;
 
-    void backtrack(vector<int> &nums, int idx) {
-        if (idx == nums.size()) {
+    void dfs(vector<int> &nums, int u) {
+        if (u == n) {
             res.push_back(path);
             return;
         }
         for (int i = 0; i < nums.size(); i++) {
             if (st[i] || i > 0 && nums[i] == nums[i - 1] && !st[i - 1]) continue;
-            path.push_back(nums[i]);
+            path[u] = nums[i];
             st[i] = true;
-            backtrack(nums, idx + 1);
-            path.pop_back();
+            dfs(nums, u + 1);
             st[i] = false;
         }
     }
 
 public:
     vector<vector<int>> permuteUnique(vector<int> &nums) {
-        st.resize(nums.size());
+        n = (int) nums.size();
+        st.resize(n);
+        path.resize(n);
         sort(nums.begin(), nums.end());
-        backtrack(nums, 0);
+        dfs(nums, 0);
         return res;
     }
 };
