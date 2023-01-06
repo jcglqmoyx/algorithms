@@ -1,17 +1,12 @@
 class Solution {
 public:
     int countEven(int num) {
-        int cnt = 0;
-        for (int i = 1; i <= num; i++) {
-            int sum = 0;
-            int t = i;
-            while (t) {
-                sum += t % 10;
-                t /= 10;
-            }
-            if (sum & 1) continue;
-            cnt++;
-        }
+        int q = num / 10;
+        int cnt = q * 5 - 1;
+        int x = q * 10, y = x, t = 0;
+        while (x) t += x % 10, x /= 10;
+        if (t & 1) cnt += (num - y + 1) / 2;
+        else cnt += (num - y) / 2 + 1;
         return cnt;
     }
 };
