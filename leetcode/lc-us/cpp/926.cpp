@@ -2,26 +2,32 @@
 
 using namespace std;
 
+/*
 class Solution {
 public:
     int minFlipsMonoIncr(string s) {
         int n = (int) s.size();
-        int zero = 0;
-        for (int i = 0; i < n; i++) if (s[i] == '0') zero++;
-        int one = n - zero;
-        int left_one[100005] = {}, right_zero[100005] = {};
+        vector<int> cnt(n + 1);
         for (int i = 1; i <= n; i++) {
-            left_one[i] = left_one[i - 1];
-            if (s[i - 1] == '1') left_one[i]++;
+            cnt[i] = cnt[i - 1] + (s[i - 1] == '1');
         }
-        for (int i = n; i >= 1; i--) {
-            right_zero[i] = right_zero[i + 1];
-            if (s[i - 1] == '0') right_zero[i]++;
-        }
-        int res = min(zero, one);
+        int res = min(cnt[n], n - cnt[n]);
         for (int i = 1; i <= n; i++) {
-            res = min(res, left_one[i] + right_zero[i + 1]);
+            res = min(res, cnt[i] + n - i - (cnt[n] - cnt[i]));
         }
         return res;
+    }
+};
+ */
+
+class Solution {
+public:
+    int minFlipsMonoIncr(string s) {
+        int cnt1 = 0, min_diff = 0;
+        for (char c: s) {
+            if (c == '1') cnt1++;
+            else if (cnt1 > min_diff) min_diff++;
+        }
+        return min_diff;
     }
 };
