@@ -5,21 +5,31 @@ using namespace std;
 class Solution {
 public:
     int minSideJumps(vector<int> &obstacles) {
-        typedef vector<int> VI;
-        typedef vector<vector<int>> VVI;
-
-        size_t n = obstacles.size();
-        VVI f(n, VI(3, 0x3f3f3f3f));
-        f[0][1] = 0;
-        f[0][0] = f[0][2] = 1;
-        for (int i = 1; i < n; i++) {
-            if (obstacles[i] != 1) f[i][0] = f[i - 1][0];
-            if (obstacles[i] != 2) f[i][1] = f[i - 1][1];
-            if (obstacles[i] != 3) f[i][2] = f[i - 1][2];
-            if (obstacles[i] != 1) f[i][0] = min(f[i][0], min(f[i][1], f[i][2]) + 1);
-            if (obstacles[i] != 2) f[i][1] = min(f[i][1], min(f[i][0], f[i][2]) + 1);
-            if (obstacles[i] != 3) f[i][2] = min(f[i][2], min(f[i][0], f[i][1]) + 1);
+        const int INF = 1e9;
+        int a = 1, b = 0, c = 1;
+        for (int i = 1; i < obstacles.size(); i++) {
+            int x = INF, y = INF, z = INF;
+            switch (obstacles[i]) {
+                case 1:
+                    y = min(b, c + 1);
+                    z = min(c, b + 1);
+                    break;
+                case 2:
+                    x = min(a, c + 1);
+                    z = min(c, a + 1);
+                    break;
+                case 3:
+                    x = min(a, b + 1);
+                    y = min(b, a + 1);
+                    break;
+                default:
+                    x = min(a, min(b, c) + 1);
+                    y = min(b, min(a, c) + 1);
+                    z = min(c, min(a, b) + 1);
+                    break;
+            }
+            a = x, b = y, c = z;
         }
-        return min(f[n - 1][0], min(f[n - 1][1], f[n - 1][2]));
+        return min(a, min(b, c));
     }
 };
