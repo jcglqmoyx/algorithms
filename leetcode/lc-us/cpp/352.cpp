@@ -41,3 +41,35 @@ public:
         return res;
     }
 };
+
+/*
+#include <bits/stdc++.h>
+
+using namespace std;
+
+class SummaryRanges {
+    set<pair<int, int>> S;
+public:
+    SummaryRanges() {
+    }
+
+    void addNum(int value) {
+        S.insert({value, value});
+    }
+
+    vector<vector<int>> getIntervals() {
+        vector<vector<int>> res;
+        int start = (*S.begin()).first, end = (*S.begin()).second;
+        for (auto &v: S) {
+            if (v.first > end + 1) res.push_back({start, end}), start = v.first, end = v.second;
+            else end = max(end, v.second);
+        }
+        res.push_back({start, end});
+        S.clear();
+        for (auto &e: res) {
+            S.insert({e[0], e[1]});
+        }
+        return res;
+    }
+};
+ */
