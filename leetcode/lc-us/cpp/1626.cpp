@@ -5,7 +5,6 @@ using namespace std;
 class Solution {
 public:
     int bestTeamScore(vector<int> &scores, vector<int> &ages) {
-        using PII = pair<int, int>;
         int n = (int) scores.size();
         vector<int> t(n);
         for (int i = 0; i < n; i++) t[i] = i;
@@ -15,6 +14,7 @@ public:
         });
         for (int i = 0; i < n; i++) t[i] = scores[t[i]];
         vector<int> f(n);
+        int res = 0;
         for (int i = 0; i < n; i++) {
             f[i] = t[i];
             for (int j = 0; j < i; j++) {
@@ -22,9 +22,6 @@ public:
                     f[i] = max(f[i], f[j] + t[i]);
                 }
             }
-        }
-        int res = 0;
-        for (int i = 0; i < n; i++) {
             res = max(res, f[i]);
         }
         return res;
