@@ -3,8 +3,6 @@
 using namespace std;
 
 class Solution {
-    int n, m;
-
     static bool is_common_divisor(const string &str, const string &divisor) {
         for (int i = 0; i < str.size(); i += (int) divisor.size()) {
             if (str.substr(i, divisor.size()) != divisor) {
@@ -16,18 +14,11 @@ class Solution {
 
 public:
     string gcdOfStrings(string str1, string str2) {
-        n = (int) str1.size(), m = (int) str2.size();
-        if (n > m) {
-            return gcdOfStrings(str2, str1);
-        }
-        for (int len = n; len >= 1; len--) {
+        int n = (int) str1.size(), m = (int) str2.size();
+        for (int len = __gcd(n, m); len >= 1; len--) {
             string divisor = str1.substr(0, len);
-            if (n % len || m % len) {
-                continue;
-            }
-            if (is_common_divisor(str1, divisor) && is_common_divisor(str2, divisor)) {
-                return divisor;
-            }
+            if (n % len || m % len) continue;
+            if (is_common_divisor(str1, divisor) && is_common_divisor(str2, divisor)) return divisor;
         }
         return "";
     }
