@@ -3,14 +3,13 @@
 using namespace std;
 
 class Solution {
-    int xor_sum(vector<int> &a) {
-        int res = 0;
-        for (int x: a) res ^= x;
-        return res;
-    }
-
 public:
     int getXORSum(vector<int> &arr1, vector<int> &arr2) {
-        return xor_sum(arr1) & xor_sum(arr2);
+        auto f = [](vector<int> &v) {
+            int res = 0;
+            for (int x: v) res ^= x;
+            return res;
+        };
+        return f(arr1) & f(arr2);
     }
 };
