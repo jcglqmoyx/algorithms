@@ -11,15 +11,15 @@ public:
         sort(projects.begin(), projects.end());
         priority_queue<int> heap;
         int idx = 0;
-        int max_profit = w;
+        int res = w;
         while (k--) {
-            while (idx < n && projects[idx].first <= max_profit) heap.push(projects[idx].second), idx++;
+            while (idx < n && projects[idx].first <= res) heap.push(projects[idx].second), idx++;
+            if (heap.empty()) break;
             if (!heap.empty()) {
-                int t = heap.top();
+                res += heap.top();
                 heap.pop();
-                max_profit += t;
-            } else break;
+            }
         }
-        return max_profit;
+        return res;
     }
 };
