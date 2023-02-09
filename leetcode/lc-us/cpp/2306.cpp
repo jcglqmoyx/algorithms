@@ -18,7 +18,7 @@ public:
             }
         }
         long long res = 0;
-        for (auto s: ideas) {
+        for (auto &s: ideas) {
             int b = s[0] - 'a';
             for (int a = 0; a < 26; a++) {
                 s[0] = a + 'a';
