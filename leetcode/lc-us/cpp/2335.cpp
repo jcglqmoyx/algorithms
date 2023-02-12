@@ -4,13 +4,7 @@ using namespace std;
 
 class Solution {
 public:
-    int fillCups(vector<int> &amount) {
-        sort(amount.begin(), amount.end());
-        int a = amount[0], b = amount[1], c = amount[2];
-        int res = c;
-        if (c < a + b) {
-            res += (a + b - c + 1) / 2;
-        }
-        return res;
+    int fillCups(vector<int> &a) {
+        return max({a[0], a[1], a[2], (a[0] + a[1] + a[2] + 1) / 2});
     }
 };
