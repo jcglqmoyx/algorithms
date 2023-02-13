@@ -7,7 +7,7 @@ public:
     int balancedString(string s) {
         char chars[4] = {'Q', 'W', 'E', 'R'};
         int n = (int) s.size(), res = n;
-        int map[123] = {0};
+        int map[123] = {};
         for (char c: s) map[c]++;
         bool ok = true;
         for (char c: chars) {
@@ -18,7 +18,7 @@ public:
         }
         if (ok) return 0;
 
-        int cnt[123] = {0};
+        int cnt[123] = {};
         for (int i = 0, j = 0; j < n; j++) {
             cnt[s[j]]++;
             while (i <= j) {
