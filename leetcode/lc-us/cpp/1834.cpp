@@ -5,40 +5,32 @@ using namespace std;
 class Solution {
 public:
     vector<int> getOrder(vector<vector<int>> &tasks) {
+        using PII = pair<int, int>;
+        using LL = long long;
         int n = (int) tasks.size();
-        for (int i = 0; i < n; i++) {
-            tasks[i].push_back(i);
-        }
-        sort(tasks.begin(), tasks.end(), [&](const vector<int> &a, const vector<int> &b) {
-            if (a[0] != b[0]) return a[0] < b[0];
-            return a[1] < b[1];
+        vector<int> indices(n);
+        iota(indices.begin(), indices.end(), 0);
+        sort(indices.begin(), indices.end(), [&](int i, int j) {
+            return tasks[i][0] < tasks[j][0];
         });
-        auto cmp = [&](int i, int j) {
-            if (tasks[i][1] != tasks[j][1]) return tasks[i][1] > tasks[j][1];
-            return tasks[i][2] > tasks[j][2];
-        };
-        priority_queue<int, vector<int>, decltype(cmp)> heap(cmp);
-        int cur = 0;
-        vector<int> res;
-        for (int i = 0; i < n;) {
-            while (i < n && tasks[i][0] <= cur) {
-                heap.push(i++);
+
+        vector<int> ans;
+        priority_queue<PII, vector<PII>, greater<>> q;
+        LL timestamp = 0;
+        int ptr = 0;
+        for (int i = 0; i < n; i++) {
+            if (q.empty()) {
+                timestamp = max(timestamp, (LL) tasks[indices[ptr]][0]);
             }
-            if (!heap.empty()) {
-                int t = heap.top();
-                heap.pop();
-                cur += tasks[t][1];
-                res.push_back(tasks[t][2]);
-            } else {
-                res.push_back(tasks[i][2]);
-                cur = tasks[i][0] + tasks[i][1];
-                i++;
+            while (ptr < n && tasks[indices[ptr]][0] <= timestamp) {
+                q.emplace(tasks[indices[ptr]][1], indices[ptr]);
+                ptr++;
             }
+            auto&&[process, index] = q.top();
+            timestamp += process;
+            ans.push_back(index);
+            q.pop();
         }
-        while (!heap.empty()) {
-            res.push_back(tasks[heap.top()][2]);
-            heap.pop();
-        }
-        return res;
+        return ans;
     }
 };
