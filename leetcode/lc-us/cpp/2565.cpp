@@ -12,12 +12,11 @@ public:
             suf[i] = suf[i + 1];
             if (j >= 0 && s[i] == t[j]) suf[i]++, j--;
         }
-        int res = m;
+        int res = m - suf[0];
         for (int i = 0, j = 0, pre = 0; i < n; i++) {
             if (j < m - 1 && s[i] == t[j]) pre++, j++;
             res = min(res, max(0, m - (pre + suf[i + 1])));
         }
-        res = min(res, m - suf[0]);
         return res;
     }
 };
