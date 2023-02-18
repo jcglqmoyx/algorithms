@@ -13,22 +13,15 @@ public:
 class Solution {
 public:
     vector<vector<int>> findSolution(CustomFunction &customfunction, int z) {
-        vector<vector<int>> solutions;
-        for (int x = 1; x <= 1000; x++) {
-            int low = 1, high = 1000;
-            while (low < high) {
-                int mid = low + (high - low) / 2;
-                int result = customfunction.f(x, mid);
-                if (result == z) {
-                    solutions.push_back({x, mid});
-                    break;
-                } else if (result > z) {
-                    high = mid;
-                } else {
-                    low = mid + 1;
-                }
+        vector<vector<int>> res;
+        for (int x = 1, y = 1000; x <= 1000 && y >= 1; x++) {
+            while (y >= 1 && customfunction.f(x, y) > z) {
+                y--;
+            }
+            if (y >= 1 && customfunction.f(x, y) == z) {
+                res.push_back({x, y});
             }
         }
-        return solutions;
+        return res;
     }
 };
