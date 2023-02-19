@@ -4,7 +4,7 @@ using namespace std;
 
 using LL = long long;
 
-const int N = 200010;
+const int N = 100010;
 
 struct Node {
     int l, r, cnt;
@@ -35,8 +35,8 @@ void update(int u, int l, int r) {
         push_down(u);
     } else {
         if (tr[u].flip) {
-            tr[u].flip = false;
             push_down(u << 1), push_down(u << 1 | 1);
+            tr[u].flip = false;
         }
         int mid = (tr[u].l + tr[u].r) >> 1;
         if (l <= mid) update(u << 1, l, r);
