@@ -5,29 +5,19 @@ using namespace std;
 class Solution {
 public:
     int minTaps(int n, vector<int> &ranges) {
-        using PII = pair<int, int>;
-        vector<PII> v;
-        v.reserve(n + 1);
+        int right_most[n + 1];
+        iota(right_most, right_most + n + 1, 0);
         for (int i = 0; i < n + 1; i++) {
-            v.emplace_back(max(0, i - ranges[i]), min(n, i + ranges[i]));
+            int l = max(0, i - ranges[i]), r = min(n, i + ranges[i]);
+//            right_most[l] = max(right_most[l], r);
+            right_most[l] = r;
         }
-        sort(v.begin(), v.end());
-        if (v.begin()->first) return -1;
-        int cnt = 0;
-        int end = 0;
-        for (int i = 0; i < n + 1 && end < n; i++) {
-            cnt++;
-            int right_most = end;
-            int j = i;
-            while (j < n + 1 && v[j].first <= end) {
-                right_most = max(right_most, v[j].second);
-                j++;
-            }
-            if (j == i) return -1;
-            end = right_most;
-            i = j - 1;
+        int res = 0, last = 0, pre = 0;
+        for (int i = 0; i < n; i++) {
+            last = max(last, right_most[i]);
+            if (i == last) return -1;
+            if (i == pre) res++, pre = last;
         }
-        if (end < n) return -1;
-        return cnt;
+        return res;
     }
 };
