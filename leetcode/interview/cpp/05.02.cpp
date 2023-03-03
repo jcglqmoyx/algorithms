@@ -6,10 +6,8 @@ class Solution {
 public:
     string printBin(double num) {
         double temp = 0.5;
-        double map[32] = {0.0};
         string binary_num = "0.";
-        for (double &i: map) {
-            i = temp;
+        for (int i = 0; i < 6; i++) {
             if (num >= temp) {
                 num -= temp;
                 binary_num.push_back('1');
