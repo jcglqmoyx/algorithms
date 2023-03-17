@@ -10,7 +10,7 @@ public:
     }
 
     void insert(string word) {
-        Trie *node = this;
+        auto node = this;
         for (char c: word) {
             if (!node->next[c - 'a']) {
                 node->next[c - 'a'] = new Trie();
@@ -22,7 +22,7 @@ public:
 
     /** Returns if the word is in the trie. */
     bool search(string word) {
-        Trie *node = this;
+        auto node = this;
         for (char c: word) {
             if (!node->next[c - 'a']) {
                 return false;
@@ -34,7 +34,7 @@ public:
 
     /** Returns if there is any word in the trie that starts with the given prefix. */
     bool startsWith(string prefix) {
-        Trie *node = this;
+        auto node = this;
         for (char c: prefix) {
             if (!node->next[c - 'a']) {
                 return false;
