@@ -21,7 +21,6 @@ private:
     }
 
     static bool valid(string &a, string &b, int l, int r) {
-        int low = l, high = r;
         bool flag = true;
         for (int i = l, j = r; i >= 0; i--, j++) {
             if (a[i] != b[j]) {
@@ -30,7 +29,7 @@ private:
             }
         }
         if (flag) return true;
-        flag = true, l = low, r = high;
+        flag = true;
         for (int i = l, j = r; i >= 0; i--, j++) {
             if (b[i] != a[j]) {
                 flag = false;
