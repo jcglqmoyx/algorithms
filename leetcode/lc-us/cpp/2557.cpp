@@ -6,6 +6,7 @@ class Solution {
 public:
     int maxCount(vector<int> &banned, int n, long long maxSum) {
         sort(banned.begin(), banned.end());
+        banned.erase(unique(banned.begin(), banned.end()), banned.end());
         int m = (int) banned.size();
         long long s[m + 1];
         memset(s, 0, sizeof s);
