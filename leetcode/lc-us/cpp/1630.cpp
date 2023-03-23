@@ -5,28 +5,33 @@ using namespace std;
 class Solution {
 public:
     vector<bool> checkArithmeticSubarrays(vector<int> &nums, vector<int> &l, vector<int> &r) {
-        int n = (int) l.size();
-        vector<bool> res;
-        res.reserve(n);
-        for (int i = 0; i < n; i++) {
-            if (r[i] - l[i] == 1) {
-                res.push_back(true);
-                continue;
+        int m = (int) l.size();
+        vector<bool> res(m);
+        for (int i = 0; i < m; i++) {
+            int left = l[i], right = r[i];
+            int mn = 1e5, mx = -1e5;
+            for (int j = left; j <= right; j++) {
+                mn = min(mn, nums[j]);
+                mx = max(mx, nums[j]);
             }
-            vector<int> arr;
-            arr.reserve(r[i] - l[i] + 1);
-            for (int j = l[i]; j <= r[i]; j++) {
-                arr.push_back(nums[j]);
-            }
-            sort(arr.begin(), arr.end());
-            bool flag = true;
-            for (int j = 1; j < arr.size() - 1; j++) {
-                if (arr[j + 1] - arr[j] != arr[j] - arr[j - 1]) {
-                    flag = false;
-                    break;
+            if ((mx - mn) % (right - left)) res[i] = false;
+            else if (mx == mn) res[i] = true;
+            else {
+                int diff = (mx - mn) / (right - left);
+                bool st[mx - mn + 1];
+                memset(st, 0, sizeof st);
+                for (int j = left; j <= right; j++) {
+                    st[nums[j] - mn] = true;
                 }
+                bool flag = true;
+                for (int x = mn + diff; x < mx; x += diff) {
+                    if (!st[x - mn]) {
+                        flag = false;
+                        break;
+                    }
+                }
+                res[i] = flag;
             }
-            res.push_back(flag);
         }
         return res;
     }

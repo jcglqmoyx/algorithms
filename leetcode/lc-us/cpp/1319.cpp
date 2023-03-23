@@ -5,30 +5,23 @@ using namespace std;
 class Solution {
 public:
     int makeConnected(int n, vector<vector<int>> &connections) {
-        if (connections.size() < n - 1) return -1;
-        f.reserve(n);
-        rank.resize(n, 1);
-        for (int i = 0; i < n; i++) f[i] = i;
-        for (const auto &connection: connections) connect(connection[0], connection[1]);
-        int count = 0;
-        for (int i = 0; i < n; i++) if (find(i) == i) count++;
-        return count - 1;
-    }
-
-private:
-    vector<int> f;
-    vector<int> rank;
-
-    void connect(int x, int y) {
-        int fx = find(x), fy = find(y);
-        if (x == y) return;
-        if (rank[fx] > rank[fy]) swap(fx, fy);
-        f[fx] = f[fy];
-        rank[fy]++;
-    }
-
-    int find(int x) {
-        if (f[x] == x) return x;
-        else return f[x] = find(f[x]);
+        if (n > connections.size() + 1) return -1;
+        int p[n], sz[n], cnt = n;
+        for (int i = 0; i < n; i++) p[i] = i, sz[i] = 1;
+        function<int(int)> find = [&](int x) -> int {
+            if (p[x] != x) p[x] = find(p[x]);
+            return p[x];
+        };
+        for (auto &c: connections) {
+            int x = c[0], y = c[1];
+            int px = find(x), py = find(y);
+            if (px != py) {
+                if (sz[px] > sz[py]) swap(px, py);
+                p[px] = py;
+                sz[py] += sz[px];
+                cnt--;
+            }
+        }
+        return cnt - 1;
     }
 };
