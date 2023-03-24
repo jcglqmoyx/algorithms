@@ -1,3 +1,4 @@
+/*
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -44,5 +45,56 @@ public:
             node = node->next[idx];
         }
         return false;
+    }
+};
+ */
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 40010;
+
+int son[N][26], p, idx;
+bool st[N];
+int max_len;
+string cur;
+
+void insert(string &s) {
+    p = 0;
+    for (int i = (int) s.size() - 1; i >= 0; i--) {
+        int u = s[i] - 'a';
+        if (!son[p][u]) son[p][u] = ++idx;
+        p = son[p][u];
+    }
+    st[p] = true;
+}
+
+bool exists() {
+    p = 0;
+    for (int i = (int) cur.size() - 1; i >= 0 && i >= (int) cur.size() - max_len; i--) {
+        int u = cur[i] - 'a';
+        if (!son[p][u]) return false;
+        p = son[p][u];
+        if (st[p]) return true;
+    }
+    return false;
+}
+
+class StreamChecker {
+public:
+    StreamChecker(vector<string> &words) {
+        memset(son, 0, sizeof son), idx = 0, memset(st, 0, sizeof st);
+        max_len = 0;
+        cur.clear();
+        for (auto &s: words) {
+            insert(s);
+            max_len = max(max_len, (int) s.size());
+        }
+    }
+
+    bool query(char letter) {
+        cur.push_back(letter);
+        return exists();
     }
 };
