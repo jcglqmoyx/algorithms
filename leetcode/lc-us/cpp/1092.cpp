@@ -6,7 +6,7 @@ class Solution {
 public:
     string shortestCommonSupersequence(string s1, string s2) {
         int n = (int) s1.size(), m = (int) s2.size();
-        int f[n + 2][m + 2];
+        int f[n + 1][m + 1];
         memset(f, 0, sizeof f);
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
