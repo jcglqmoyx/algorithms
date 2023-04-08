@@ -32,7 +32,7 @@ public:
         if (visited.find(node) != visited.end()) {
             return visited[node];
         }
-        Node *clone_node = new Node(node->val);
+        auto clone_node = new Node(node->val);
         visited[node] = clone_node;
         for (auto &neighbor: node->neighbors) {
             clone_node->neighbors.push_back(cloneGraph(neighbor));
