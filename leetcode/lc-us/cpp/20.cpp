@@ -5,25 +5,18 @@ using namespace std;
 class Solution {
 public:
     bool isValid(string s) {
-        stack<char> chars;
-        int map[128] = {0};
-        map['('] = ')';
-        map['['] = ']';
-        map['{'] = '}';
+        unordered_map<char, char> map = {{')', '('},
+                                         {']', '['},
+                                         {'}', '{'}};
+        stack<char> stk;
         for (char c: s) {
-            if (c == '(' || c == '[' || c == '{') {
-                chars.push(c);
+            if (map.count(c)) {
+                if (stk.empty() || stk.top() != map[c]) return false;
+                stk.pop();
             } else {
-                if (chars.empty()) {
-                    return false;
-                }
-                char top = chars.top();
-                if (map[top] != c) {
-                    return false;
-                }
-                chars.pop();
+                stk.push(c);
             }
         }
-        return chars.empty();
+        return stk.empty();
     }
 };

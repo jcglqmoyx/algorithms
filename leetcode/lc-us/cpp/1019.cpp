@@ -16,20 +16,20 @@ struct ListNode {
 class Solution {
 public:
     vector<int> nextLargerNodes(ListNode *head) {
-        vector<int> nums;
-        ListNode *node = head;
-        while (node) {
-            nums.push_back(node->val);
-            node = node->next;
+        vector<int> v;
+        while (head) {
+            v.push_back(head->val);
+            head = head->next;
         }
-        int n = (int) nums.size();
-        stack<int> s;
+        auto n = v.size();
         vector<int> res(n);
-        for (int i = n - 1; ~i; i--) {
-            while (!s.empty() && nums[s.top()] <= nums[i]) s.pop();
-            if (!s.empty()) res[i] = nums[s.top()];
-            else res[i] = 0;
-            s.push(i);
+        stack<int> stk;
+        for (int i = 0; i < n; i++) {
+            while (!stk.empty() && v[stk.top()] < v[i]) {
+                if (v[stk.top()] < v[i]) res[stk.top()] = v[i];
+                stk.pop();
+            }
+            stk.push(i);
         }
         return res;
     }
