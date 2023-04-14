@@ -3,32 +3,20 @@
 using namespace std;
 
 class Solution {
-    bool check(string &query, string &pattern) {
-        int m = (int) query.size(), n = (int) pattern.size();
-        int i = 0, j = 0;
-        while (i < m && j < n) {
-            while (i < m && query[i] != pattern[j]) {
-                if (isupper(query[i])) {
-                    return false;
-                }
-                i++;
-            }
-            i++;
-            j++;
-        }
-        if (i > m || j < n) return false;
-        while (i < m) {
-            if (isupper(query[i++])) return false;
-        }
-        return true;
-    }
-
 public:
     vector<bool> camelMatch(vector<string> &queries, string pattern) {
-        int n = (int) queries.size();
-        vector<bool> res(n);
+        auto n = queries.size();
+        vector<bool> res(n, true);
         for (int i = 0; i < n; i++) {
-            res[i] = check(queries[i], pattern);
+            int p = 0;
+            for (char c: queries[i]) {
+                if (p < pattern.size() && c == pattern[p]) p++;
+                else if (isupper(c)) {
+                    res[i] = false;
+                    break;
+                }
+            }
+            if (p < pattern.size()) res[i] = false;
         }
         return res;
     }
