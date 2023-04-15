@@ -1,2 +1,2 @@
-UPDATE salary
-SET sex = CASE sex WHEN 'f' THEN 'm' ELSE 'f' END;
+UPDATE Salary
+SET sex = IF(sex = 'f', 'm', 'f');
