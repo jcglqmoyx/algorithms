@@ -8,7 +8,7 @@ public:
         unordered_map<int, int> cnt;
         for (int x: nums) cnt[x]++;
         int a[55] = {}, idx = 1;
-        for (auto[k, v]: cnt) {
+        for (auto [_, v]: cnt) {
             a[idx++] = v;
         }
         int n = idx, m = (int) quantity.size();

@@ -25,20 +25,19 @@ struct Node {
 } tr[N << 2];
 
 class MajorityChecker {
-    vector<vector<int>> s;
     vector<int> a;
-
+    vector<vector<int>> s;
 
     void build(int u, int l, int r) {
         tr[u] = {l, r};
         if (l == r) {
             tr[u].val = a[l];
             tr[u].cnt = 1;
-            return;
+        } else {
+            int mid = (l + r) >> 1;
+            build(u << 1, l, mid), build(u << 1 | 1, mid + 1, r);
+            tr[u] = tr[u << 1] + tr[u << 1 | 1];
         }
-        int mid = (l + r) >> 1;
-        build(u << 1, l, mid), build(u << 1 | 1, mid + 1, r);
-        tr[u] = tr[u << 1] + tr[u << 1 | 1];
     }
 
     Node ask(int u, int l, int r) {
@@ -61,7 +60,7 @@ public:
     }
 
     int query(int left, int right, int threshold) {
-        Node t = ask(1, left, right);
+        auto t = ask(1, left, right);
         auto l = lower_bound(s[t.val].begin(), s[t.val].end(), left);
         auto r = upper_bound(s[t.val].begin(), s[t.val].end(), right);
         if (r - l >= threshold) return t.val;
