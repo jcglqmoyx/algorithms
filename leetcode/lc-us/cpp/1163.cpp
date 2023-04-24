@@ -5,30 +5,18 @@ using namespace std;
 class Solution {
 public:
     string lastSubstring(string s) {
-        int n = (int) s.size(), pos = n - 1;
-        char mx = s[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            if (s[i] >= mx) pos = i, mx = s[i];
-        }
-        int r = pos + 1, j, k;
-        while (r < n) {
-            if (s[r] != mx) {
-                r++;
+        int i = 0, j = 1, n = (int) s.size();
+        while (j < n) {
+            int k = 0;
+            while (j + k < n && s[i + k] == s[j + k]) k++;
+            if (j + k < n && s[i + k] < s[j + k]) {
+                int t = i;
+                i = j;
+                j = max(j + 1, t + k + 1);
             } else {
-                j = pos + 1, k = r + 1;
-                while (j < r && k < n) {
-                    if (s[j] == s[k]) j++, k++;
-                    else {
-                        if (s[j] < s[k]) {
-                            pos = r;
-                            r = pos + 1;
-                        } else r = k + 1;
-                        break;
-                    }
-                }
-                if (j == r || k == n) r = k;
+                j = j + k + 1;
             }
         }
-        return s.substr(pos);
+        return s.substr(i);
     }
 };
