@@ -4,34 +4,23 @@ using namespace std;
 
 class Solution {
 public:
-    int maximumRows(vector<vector<int>> &mat, int cols) {
-        int n = (int) mat.size(), m = (int) mat[0].size();
+    int maximumRows(vector<vector<int>> &matrix, int numSelect) {
+        int n = (int) matrix.size(), m = (int) matrix[0].size();
         int res = 0;
         for (int i = 0; i < 1 << m; i++) {
-            if (__builtin_popcount(i) != cols) {
-                continue;
-            }
-            bool st[n][m];
-            memset(st, 0, sizeof st);
-            for (int j = 0; j < m; j++) {
-                if (i >> j & 1) {
-                    for (int r = 0; r < n; r++) {
-                        st[r][j] = true;
-                    }
-                }
-            }
-            int cnt = 0;
+            if (__builtin_popcount(i) != numSelect) continue;
+            int t = 0;
             for (int r = 0; r < n; r++) {
                 bool flag = true;
                 for (int c = 0; c < m; c++) {
-                    if (mat[r][c] == 1 && !st[r][c]) {
+                    if (matrix[r][c] && !(i >> c & 1)) {
                         flag = false;
                         break;
                     }
                 }
-                if (flag) cnt++;
+                t += flag;
             }
-            res = max(res, cnt);
+            res = max(res, t);
         }
         return res;
     }
