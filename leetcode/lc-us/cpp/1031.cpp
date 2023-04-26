@@ -6,19 +6,25 @@ class Solution {
 public:
     int maxSumTwoNoOverlap(vector<int> &nums, int firstLen, int secondLen) {
         int n = (int) nums.size();
-        vector<int> s(n + 1);
+        int s[n + 1];
+        s[0] = 0;
         for (int i = 1; i <= n; i++) s[i] = s[i - 1] + nums[i - 1];
-        int res = 0;
-        for (int i = 1; i + firstLen - 1 <= n; i++) {
-            for (int j = i + firstLen; j + secondLen - 1 <= n; j++) {
-                res = max(res, s[i + firstLen - 1] - s[i - 1] + s[j + secondLen - 1] - s[j - 1]);
+        auto get = [&](int a, int b) {
+            int f[n + 1];
+            f[a - 1] = 0;
+            for (int i = 1, seg = 0; i <= n; i++) {
+                seg += nums[i - 1];
+                if (i >= a) {
+                    f[i] = max(seg, f[i - 1]);
+                    seg -= nums[i - a];
+                }
             }
-        }
-        for (int i = 1; i + secondLen - 1 <= n; i++) {
-            for (int j = i + secondLen; j + firstLen - 1 <= n; j++) {
-                res = max(res, s[i + secondLen - 1] - s[i - 1] + s[j + firstLen - 1] - s[j - 1]);
+            int res = 0;
+            for (int j = n - b + 1; j > a; j--) {
+                res = max(res, s[j + b - 1] - s[j - 1] + f[j - 1]);
             }
-        }
-        return res;
+            return res;
+        };
+        return max(get(firstLen, secondLen), get(secondLen, firstLen));
     }
 };
