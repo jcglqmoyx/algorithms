@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+
 const int N = 105, M = N * N / 2;
 
 int h[N], e[M], ne[M], idx;
