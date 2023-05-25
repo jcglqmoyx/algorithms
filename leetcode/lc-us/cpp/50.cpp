@@ -1,14 +1,13 @@
 class Solution {
 public:
     double quick_mul(double x, long n) {
-        double power = 1.0;
-        double temp = x;
+        double res = 1.0;
         while (n) {
-            if (n & 1) power *= temp;
-            temp *= temp;
+            if (n & 1) res *= x;
+            x *= x;
             n >>= 1;
         }
-        return power;
+        return res;
     }
 
     double myPow(double x, int n) {
