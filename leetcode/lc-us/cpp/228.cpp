@@ -9,7 +9,7 @@ public:
         int i = 0;
         while (i < nums.size()) {
             int j = i + 1;
-            while (j < nums.size() && (long) nums[j] - (long) nums[i] == j - i) j++;
+            while (j < nums.size() && (int64_t) nums[j] - nums[i] == j - i) j++;
             if (nums[i] == nums[j - 1]) summary.push_back(to_string(nums[i]));
             else summary.push_back(to_string(nums[i]) + "->" + to_string(nums[j - 1]));
             i = j;
