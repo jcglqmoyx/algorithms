@@ -36,10 +36,8 @@ public:
         }
         long long res = 0;
         for (int i = 1; i < n - 1; i++) {
-            int x = nums2[i - 1];
-            int pos = p[x];
-            update(pos, 1);
-            long long left = query(p[nums2[i]]);
+            update(p[nums2[i - 1]], 1);
+            long long left = query(p[nums2[i]] - 1);
             res += left * (n - i - 1 - (p[nums2[i]] - 1 - left));
         }
         return res;
