@@ -5,29 +5,28 @@ using namespace std;
 class Solution {
 public:
     int makeArrayIncreasing(vector<int> &arr1, vector<int> &arr2) {
+        constexpr int INF = 0x3f3f3f3f;
         sort(arr2.begin(), arr2.end());
         arr2.erase(unique(arr2.begin(), arr2.end()), arr2.end());
-        int n = (int) arr1.size(), m = (int) arr2.size(), INF = 0x3f3f3f3f;
-        m = min(n, m);
-        arr2.push_back(INF + 5);
-        int f[m + 1];
-        memset(f, 0x3f, sizeof f);
-        f[0] = arr1[0];
-        for (int i = 1; i <= m; i++) f[i] = min(arr1[0], arr2[0]);
+        arr1.insert(arr1.begin(), -1);
+        arr1.push_back(INF);
+        int n = (int) arr1.size(), m = (int) arr2.size();
+
+        int dp[n];
+        memset(dp, 0x3f, sizeof dp);
+        dp[0] = 0;
         for (int i = 1; i < n; i++) {
-            int g[m + 1];
-            memset(g, 0x3f, sizeof g);
-            for (int j = 0; j <= m; j++) {
-                if (arr1[i] > f[j]) g[j] = arr1[i];
-                if (j > 0) {
-                    g[j] = min(g[j], *upper_bound(arr2.begin(), arr2.end(), f[j - 1]));
+            if (arr1[i - 1] < arr1[i]) {
+                dp[i] = min(dp[i], dp[i - 1]);
+            }
+            for (int j = 1; j < i; j++) {
+                int k = upper_bound(arr2.begin(), arr2.end(), arr1[i - j - 1]) - arr2.begin();
+                if (k + j - 1 < m && arr2[k + j - 1] < arr1[i]) {
+                    dp[i] = min(dp[i], dp[i - j - 1] + j);
                 }
             }
-            memcpy(f, g, sizeof g);
+
         }
-        for (int i = 0; i <= m; i++) {
-            if (f[i] < INF) return i;
-        }
-        return -1;
+        return dp[n - 1] == INF ? -1 : dp[n - 1];
     }
 };
