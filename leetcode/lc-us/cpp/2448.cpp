@@ -10,7 +10,9 @@ public:
         int n = (int) nums.size();
         vector<pair<int, int>> v(n);
         for (int i = 0; i < n; i++) v[i] = {nums[i], cost[i]};
-        sort(v.begin(), v.end());
+        sort(v.begin(), v.end(), [](const pair<int, int> &a, const pair<int, int> &b) {
+            return a.first < b.first;
+        });
 
         ll res = 0;
         int p = v[0].first;

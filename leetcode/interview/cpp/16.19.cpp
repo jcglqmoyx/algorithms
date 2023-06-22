@@ -3,36 +3,35 @@
 using namespace std;
 
 class Solution {
-    int size = 0;
-    vector<int> pond_sizes;
-
-    void dfs(vector<vector<int>> &land, int i, int j) {
-        if (i < 0 || i >= land.size() || j < 0 || j >= land[i].size() || land[i][j] != 0) {
-            return;
-        }
-        land[i][j] = 1;
-        size++;
-        dfs(land, i + 1, j);
-        dfs(land, i - 1, j);
-        dfs(land, i, j + 1);
-        dfs(land, i, j - 1);
-        dfs(land, i - 1, j - 1);
-        dfs(land, i - 1, j + 1);
-        dfs(land, i + 1, j - 1);
-        dfs(land, i + 1, j + 1);
-    }
-
 public:
     vector<int> pondSizes(vector<vector<int>> &land) {
-        for (int i = 0; i < land.size(); i++) {
-            for (int j = 0; j < land[i].size(); j++) {
-                if (land[i][j] == 0) {
-                    dfs(land, i, j);
-                    pond_sizes.push_back(size);
-                    size = 0;
+        int dx[] = {1, 1, 0, -1, -1, -1, 0, 1};
+        int dy[] = {0, 1, 1, 1, 0, -1, -1, -1};
+        int n = (int) land.size(), m = (int) land[0].size();
+        vector<int> res;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (!land[i][j]) {
+                    land[i][j] = 1;
+                    int sz = 1;
+                    queue<pair<int, int>> q;
+                    q.push({i, j});
+                    while (!q.empty()) {
+                        auto t = q.front();
+                        q.pop();
+                        for (int d = 0; d < 8; d++) {
+                            int x = t.first + dx[d], y = t.second + dy[d];
+                            if (x < 0 || x == n || y < 0 || y == m || land[x][y]) continue;
+                            q.push({x, y});
+                            land[x][y] = 1;
+                            sz++;
+                        }
+                    }
+                    res.emplace_back(sz);
                 }
             }
         }
-        return pond_sizes;
+        sort(res.begin(), res.end());
+        return res;
     }
 };
